@@ -58,7 +58,7 @@ function TodoList(props) {
                 key={i}
                 className={todo.status ? "completed" : "notcompleted"}
               >
-                {todo.name} - {todo.status ? "completed" : "notcompleted"}
+                {todo.name}
               </li>
             </div>
           );
