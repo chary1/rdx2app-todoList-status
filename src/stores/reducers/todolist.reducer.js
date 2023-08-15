@@ -29,9 +29,11 @@ const todoListReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case "ADD_TODO":
-      return { ...state, todos: [...state.todos, payload] };
+      var temp = [...state.todos];
+      return { ...state, todos: [...temp, payload] };
     case "DELETE_TODO":
       var temp = [...state.todos];
+
       //   var removeIndex = temp.findIndex((todo) => todo.id === payload.id);
       //   console.log(removeIndex);
       //   if (temp.indexOf(-1)) {
@@ -39,14 +41,14 @@ const todoListReducer = (state = initialState, action) => {
       //   }
       //   return { ...state, todos: [...temp] };
 
-      const temp_arry = temp.filter(function (el) {
+      const filterarry = temp.filter(function (el) {
         if (el.id !== payload.id) {
           return true;
         } else {
           return false;
         }
       });
-      return { ...state, todos: [...temp_arry] };
+      return { ...state, todos: [...filterarry] };
 
     case "TODO_STATUS":
       var temp1 = [...state.todos];

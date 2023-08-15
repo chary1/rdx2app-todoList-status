@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { v4 as uuid } from "uuid";
-
+import { addTodo, deleteTodo, todoStatus } from "../stores/actions";
 function TodoList(props) {
   const [task, setTask] = useState({
     name: "",
@@ -20,16 +20,16 @@ function TodoList(props) {
       setFilteredtodo(props.todos.todos);
     }
     if (filteredkey === "completed") {
-      var temp = props.todos.todos.filter((todo) => {
+      var temp1 = props.todos.todos.filter((todo) => {
         return todo.status === true;
       });
-      setFilteredtodo([...temp]);
+      setFilteredtodo([...temp1]);
     }
     if (filteredkey === "notcompleted") {
-      var temp = props.todos.todos.filter((todo) => {
+      var temp2 = props.todos.todos.filter((todo) => {
         return todo.status === false;
       });
-      setFilteredtodo([...temp]);
+      setFilteredtodo([...temp2]);
     }
   }, [props.todos, filteredkey]);
 
@@ -37,29 +37,35 @@ function TodoList(props) {
     setFilteredkey(e.target.value);
   };
 
-  const hangeTaskName = (e) => {
+  const inputTextValue = (e) => {
     //console.log(e.target.value);
     setTask({ ...task, name: e.target.value });
   };
-  const addTodo = () => {
-    props.dispatch({ type: "ADD_TODO", payload: task });
+
+  const addTaskButton = (task) => {
+    props.dispatch(addTodo(task));
   };
 
-  const deleteTodo = (task) => {
-    console.log(task);
-    props.dispatch({ type: "DELETE_TODO", payload: task });
+  const deleteButton = (task) => {
+    props.dispatch(deleteTodo(task));
   };
 
-  const todoStatus = (status) => {
+  const statusButton = (status) => {
     console.log(status);
-    props.dispatch({ type: "TODO_STATUS", payload: status });
+    props.dispatch(todoStatus(status));
   };
 
   return (
     <div className="border">
-      <input type="text" onChange={hangeTaskName} />
-      <button onClick={addTodo}>Add</button> {task.name} - {task.status}
+      {/* Add Form  */}
+      <input type="text" onChange={inputTextValue} />
+      <button onClick={() => addTaskButton(task)}>Add</button>
+      {/* {task.name} - {task.status} */}
+
+      {/* Count  */}
       <h2>Todos List count : {filteredtodo && filteredtodo.length} </h2>
+
+      {/* Filters by using radio buttons  */}
       <div>
         <input
           type="radio"
@@ -92,12 +98,12 @@ function TodoList(props) {
                 className={todo.status ? "completed" : "notcompleted"}
               >
                 {todo.name}
-                <button onClick={() => deleteTodo(todo)}>Delete</button>
+                <button onClick={() => deleteButton(todo)}>Delete</button>
                 {todo.status === false && (
-                  <button onClick={() => todoStatus(todo)}>Done</button>
+                  <button onClick={() => statusButton(todo)}>Done</button>
                 )}
                 {todo.status === true && (
-                  <button onClick={() => todoStatus(todo)}>Undo</button>
+                  <button onClick={() => statusButton(todo)}>Undo</button>
                 )}
               </li>
             </div>
